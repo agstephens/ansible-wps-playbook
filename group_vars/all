@@ -26,9 +26,13 @@ logrotate_applications:
         options:
           - rotate 7
           - daily
+          - dateext
           - copytruncate
           - missingok
           - notifempty
+          - sharedscripts
+        postrotate:
+          - supervisorctl restart all >/dev/null 2>/dev/null || true
 
 # postgres
 db_install_postgresql: true
@@ -110,6 +114,7 @@ wps_basedir: "{{ service_user_home }}"
 wps_cache_dir: "{{ wps_basedir }}/cache"
 wps_cronjob_disabled: yes
 wps_outputs_keep_days: 30
+wps_temp_keep_days: 30
 wps_services: []
   # - name: emu
   #   repo: https://github.com/bird-house/emu.git
